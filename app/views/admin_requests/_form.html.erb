@@ -1,5 +1,5 @@
 <%= form_with(model: admin_request, class: "contents") do |form| %>
-  <h1 class="text-xl mt-5 underline">Contact Details</h1>
+  <h1 class="mt-5 text-xl underline">Contact Details</h1>
 
   <div class="my-5">
     <%= form.label :contact_email, "Email (we will contact you on this email)" %>
@@ -25,7 +25,7 @@
     <% end %>
   </div>
 
-  <h1 class="text-xl mt-10 underline">Theater Details</h1>
+  <h1 class="mt-10 text-xl underline">Theater Details</h1>
 
   <div class="my-5">
     <%= form.label :theater_name , "Theater name (with Area name)" %>
@@ -51,12 +51,14 @@
     <% end %>
   </div>
 
-  <h1 class="text-xl mt-10 underline">Documents to be uploaded for verification (.pdf, .doc, .docx) in less than 5Mb size</h1>
+  <h1 class="mt-10 text-xl underline">Documents to be uploaded for verification (.pdf, .doc, .docx) in less than 5Mb size</h1>
 
   <div class="flex gap-x-10">
     <div class="mt-5">
       <%= form.label :business_license, "Business license" %>
       <%= form.hidden_field :business_license, value: form.object.business_license.signed_id if form.object.business_license.attached? %>
+      
+      <%# TODO: file/image preview hotwired %>
       <%= form.file_field :business_license, direct_upload: true, accept: 'application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document', class: "block cursor-pointer shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
       <% admin_request.errors.full_messages_for(:business_license).each do |message| %>
         <div class="text-red-500"><%= message %></div>

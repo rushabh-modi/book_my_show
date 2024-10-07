@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
     redirect_to root_path
   end
 
+  # TODO: use exception message
   def handle_no_method_error(_exception)
     flash[:alert] = 'Oops! Something went wrong.'
     redirect_back(fallback_location: root_path)

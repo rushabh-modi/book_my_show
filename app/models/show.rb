@@ -7,6 +7,7 @@ class Show < ApplicationRecord
   has_many :bookings, through: :screenings, dependent: :destroy
   has_many :feedbacks, as: :commentable, dependent: :destroy
 
+  # TODO replace method with proc and improve cond.
   after_update :show_cancelled, if: -> { status_previously_changed? && status == 'cancelled' }
 
   enum category: %i[movie play sport event]
@@ -31,6 +32,7 @@ class Show < ApplicationRecord
                      dimension: { width: { min: 200, max: 600 },
                                   height: { min: 200, max: 600 } }
 
+  # FIXME: change includes order
   scope :active, -> { where(status: :active).includes(poster_attachment: :blob) }
   scope :can_book, -> { joins(:screenings).distinct }
 
@@ -38,10 +40,13 @@ class Show < ApplicationRecord
   scope :recommended, -> { order(created_at: :desc).active.can_book.take(5) }
   scope :by_language, lambda { |language|
                         where(':languages = ANY (languages)', languages: language).active.limit(5)
-                      }
+                      } # FIXME: replace limit with take
   scope :except_movies, -> { where.not(category: :movie).active.can_book.take(5) }
 
+  # FIXME: change name
   scope :active_form, -> { where(status: :active) } # for forms avoid eager loading
+
+  # OPTIMIZE: languages & genres workings here
 
   def self.languages
     { 'hindi' => 'hindi', 'english' => 'english', 'gujarati' => 'gujarati', 'tamil' => 'tamil', 'telugu' => 'telugu' }

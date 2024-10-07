@@ -13,6 +13,7 @@ class Booking < ApplicationRecord
   validates :booking_date, :total_price, presence: true
 
   scope :confirmed, -> { where(status: :confirmed) }
+  # FIXME: change includes order
   scope :past, lambda {
                  where('booking_date < ?', Time.current).confirmed.includes(screening: [:show, { screen: :theater }])
                }

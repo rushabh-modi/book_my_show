@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%# TODO: add title helper %>
     <title>Theater Portal | BookMyShow</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -14,7 +15,7 @@
   <body>
     <%= render 'layouts/admin/header' %>
     <%= render 'layouts/flash' %>
-    <main class="container mx-auto mt-8 mb-48 px-8">
+    <main class="container px-8 mx-auto mt-8 mb-48">
       <%= yield %>
     </main>
     <%#= debug(params) if Rails.env.development? %>

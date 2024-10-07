@@ -5,6 +5,7 @@ class Screening < ApplicationRecord
   has_many :bookings, dependent: :destroy
   has_many :show_timings, dependent: :destroy
 
+  # OPTIMIZE: status changes
   after_save :update_screen_status
   after_destroy :update_screen_status
   before_create :start_date_before_end_date
@@ -43,6 +44,7 @@ class Screening < ApplicationRecord
   end
 
   def update_screen_status
+    # OPTIMIZE: use named placeholder for inputs
     if screen.screenings.where('start_date <= ? AND end_date >= ?', Time.current, Time.current).exists?
       screen.update(status: :running)
     else

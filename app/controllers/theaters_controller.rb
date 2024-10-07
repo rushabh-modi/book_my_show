@@ -8,6 +8,7 @@ class TheatersController < ApplicationController
 
   # GET /theaters/1 or /theaters/1.json
   def show
+    # TODO: add below both in concern
     @theater_shows = Show.active.joins(screenings: :screen).where(screens: { theater_id: @theater.id }).distinct
 
     @show_screening_details = @theater_shows.map do |show|
@@ -16,7 +17,7 @@ class TheatersController < ApplicationController
     end
 
     @feedback = @theater.feedbacks.new
-
+    # FIXME: change includes order & use async_count
     @feedbacks_count = @theater.feedbacks.count
     @pagy, @theater_feedbacks = pagy(@theater.feedbacks.order(created_at: :desc).includes(:user))
 

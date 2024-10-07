@@ -43,6 +43,7 @@ Rails.application.routes.draw do
                sign_up: 'signup'
              }
 
+  # OPTIMIZE: add member actions with only: []
   get '/admin_requests', to: 'admin_requests#new'
   post '/admin_requests', to: 'admin_requests#create'
   get 'up' => 'rails/health#show', as: :rails_health_check

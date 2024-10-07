@@ -3,14 +3,18 @@ class Admin::ScreensController < Admin::BaseController
   before_action :set_screen, only: %i[show edit update destroy]
 
   def index
+    # OPTIMIZE: multiple queries fired here & try load_async
     @screens = @theater.screens.order(created_at: :asc)
 
+    # TODO: add below both in concern
     @screen_shows = Show.active.joins(screenings: :screen).where(screens: { theater_id: @theater.id }).distinct
 
     @show_screening_details = @screen_shows.map do |show|
       screenings = show.screenings.includes(:screen).where(screens: { theater_id: @theater.id })
       { show:, screenings: }
     end
+
+    # TODO: Create service object for getting charts data
 
     @bookings = Booking.confirmed.joins(screening: :screen).where(screens: { theater_id: @theater.id })
 
@@ -78,6 +82,7 @@ class Admin::ScreensController < Admin::BaseController
   end
 
   def switch_theater
+    # FIXME: remove friendly call
     theater = Theater.friendly.find(params[:theater_id])
     if current_user.theaters.include?(theater)
       session[:current_theater] = theater.id

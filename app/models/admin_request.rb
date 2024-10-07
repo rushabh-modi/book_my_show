@@ -40,6 +40,7 @@ class AdminRequest < ApplicationRecord
   end
 
   def activate_theater_and_admins
+    # OPTIMIZE: wrap in transaction
     theater = Theater.find_by(name: theater_name)
     theater&.update!(status: :active)
 
@@ -50,7 +51,9 @@ class AdminRequest < ApplicationRecord
     end
   end
 
+  # TODO: change method name
   def destroy_resources
+    # OPTIMIZE: wrap in transaction
     theater = Theater.find_by(name: theater_name)
     theater&.destroy!
 
@@ -64,6 +67,7 @@ class AdminRequest < ApplicationRecord
     errors.add(:theater_name, 'with this name already exists') if Theater.find_by(name: theater_name).present?
   end
 
+  # TODO: remove this
   def admin_emails_already_exists
     admin_emails.split(',').map(&:strip).each do |email|
       errors.add(:admin_emails, "#{email} is already a registered user") if User.find_by(email:).present?

@@ -4,6 +4,7 @@ class FeedbacksController < ApplicationController
   before_action :set_commentable
   before_action :set_feedback, only: %i[edit update destroy]
 
+  # OPTIMIZE: merge user through params
   def create
     @feedback = @commentable.feedbacks.new(feedback_params)
     @feedback.user = current_user
@@ -23,6 +24,7 @@ class FeedbacksController < ApplicationController
     authorize @feedback
   end
 
+  # OPTIMIZE: turbo stream
   def update
     authorize @feedback
     respond_to do |format|

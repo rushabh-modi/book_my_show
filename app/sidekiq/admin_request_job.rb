@@ -9,6 +9,7 @@ class AdminRequestJob
     theater_pincode = admin_request.pincode
     admin_emails = admin_request.admin_emails.split(',').map(&:strip)
 
+    # TODO: wrap in transaction
     # create theatre
     theater = Theater.create!(name: theater_name, address: theater_address, pincode: theater_pincode, status: :inactive)
 

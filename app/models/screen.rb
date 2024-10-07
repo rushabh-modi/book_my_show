@@ -14,6 +14,7 @@ class Screen < ApplicationRecord
 
   private
 
+  # TODO improve
   def discard_screenings_if_maintenance_or_unavailable
     if in_maintenance?
       screenings.destroy_all

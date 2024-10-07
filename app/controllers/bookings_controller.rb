@@ -7,6 +7,7 @@ class BookingsController < ApplicationController
     authorize @booking
   end
 
+  # OPTIMIZE: merge data through params
   def create
     @booking = @screening.bookings.new(booking_params)
     @booking.booking_date = @booking.show_timing&.at_timeof

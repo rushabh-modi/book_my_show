@@ -35,10 +35,12 @@ class User < ApplicationRecord
     bookings.cancelled
   end
 
+  # FIXME: change name
   def user_has_booked?(show)
     bookings.confirmed.joins(screening: :show).where(screenings: { show: }).exists?
   end
 
+  # FIXME: change name
   def has_booked_in_theater?(theater)
     bookings.confirmed.joins(screening: { screen: :theater }).where(screens: { theater: }).exists?
   end

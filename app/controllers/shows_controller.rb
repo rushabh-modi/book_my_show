@@ -6,6 +6,7 @@ class ShowsController < ApplicationController
     @q = Show.active.ransack(params[:q])
     @pagy, @all_shows = pagy(@q.result(distinct: true), items: 20)
 
+    # OPTIMIZE: checkbox filter form
     return unless params[:booking_available] == '1'
 
     @all_shows = @all_shows.joins(:screenings).distinct
@@ -15,6 +16,7 @@ class ShowsController < ApplicationController
   def show
     @feedback = @show.feedbacks.new
 
+    # FIXME: change includes order & use async_count
     @reviews_count = @show.feedbacks.count
     @pagy, @show_feedbacks = pagy(@show.feedbacks.order(created_at: :desc).includes(:user))
 
